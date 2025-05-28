@@ -1,11 +1,7 @@
 import fetch from "node-fetch";
 
 export default async function handler(req, res) {
-  const { username } = req.query;
-  if (!username) {
-    res.status(400).send("Missing username");
-    return;
-  }
+  const username = req.query.username || "octocat";
 
   const githubRes = await fetch(`https://api.github.com/users/${username}`);
   const data = await githubRes.json();
