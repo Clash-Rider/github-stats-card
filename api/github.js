@@ -1,12 +1,9 @@
-import fetch from "node-fetch";
-
 export default async function handler(req, res) {
   const username = req.query.username || "octocat";
+  const response = await fetch(`https://api.github.com/users/${username}`);
+  const data = await response.json();
 
-  const githubRes = await fetch(`https://api.github.com/users/${username}`);
-  const data = await githubRes.json();
-
-  if (!data || data.message === "Not Found") {
+  if (data.message === "Not Found") {
     res.status(404).send("GitHub user not found");
     return;
   }
@@ -26,5 +23,5 @@ export default async function handler(req, res) {
 
   res.setHeader("Content-Type", "image/svg+xml");
   res.setHeader("Cache-Control", "no-cache");
-  res.status(200).send(svg);
+  res.send(svg);
 }
